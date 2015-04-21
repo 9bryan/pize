@@ -1,0 +1,5 @@
+user root
+file /etc/hosts
+package ntp
+service ntp
+host localhost
