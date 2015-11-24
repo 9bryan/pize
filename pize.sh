@@ -26,9 +26,7 @@ if [ -z "$2" ]
     outFile = $2
 fi
     
-echo $inputFile
-echo $outFile
-
+# read list and resource lines
 echo '#!/bin/bash' > $outFile
 cat > $outFile <<'EOF'
 #
@@ -37,6 +35,11 @@ cat > $outFile <<'EOF'
 EOF
 
 while read i; do
+  # resource each type referenced in the file.
+  # also a good place to put some logic to copy a file resource to a module/files directory if it's smaller than maybe 100k
   puppet resource $i >> $outFile
   echo "" >> $outFile
 done < $inputFile
+
+# Lint --fix outFile, This should probably always be the last line.
+puppet-lint $outFile --fix
